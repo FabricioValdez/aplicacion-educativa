@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const API_URL = rawApiUrl.endsWith("/") ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 async function request(path, options = {}) {
   const { headers = {}, ...restOptions } = options;

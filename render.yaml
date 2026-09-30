@@ -1,0 +1,43 @@
+databases:
+  - name: aplicacion-educativa-db
+    databaseName: aplicacion_educativa
+    user: aplicacion_user
+    plan: free
+    region: oregon
+
+services:
+  # Backend Web Service (Node.js + Express + PostgreSQL)
+  - type: web
+    name: aplicacion-educativa-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aplicacion-educativa-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://aplicacion-educativa-web.onrender.com
+
+  # Frontend Static Site (React + Vite + TailwindCSS)
+  - type: web
+    name: aplicacion-educativa-web
+    runtime: static
+    plan: free
+    region: oregon
+    rootDir: Frontend/aplicacion-educativa
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://aplicacion-educativa-api.onrender.com/api

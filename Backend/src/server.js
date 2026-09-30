@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import { testConnection } from "./config/database.js";
 import { config } from "./config/env.js";
+import { autoInitDatabase } from "./db/auto-init.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import achievementRoutes from "./routes/achievement.routes.js";
 import activityRoutes from "./routes/activity.routes.js";
@@ -62,6 +63,10 @@ app.use((_request, response) => {
 app.use(errorHandler);
 
 app.listen(config.port, async () => {
-  console.log(`QuestWorld API escuchando en http://localhost:${config.port}`);
-  await testConnection();
+  console.log(`QuestWorld API escuchando en el puerto ${config.port}`);
+  const connected = await testConnection();
+  if (connected) {
+    await autoInitDatabase();
+  }
 });
+
