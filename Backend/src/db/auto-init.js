@@ -158,6 +158,7 @@ const achievementsToSeed = [
 ];
 
 const competitorsToSeed = [
+  { id: "1", name: "Estudiante", password: "1234", role: "child", avatar: "astronaut", points: 250, streakDays: 3, streakProtected: true },
   { id: "2", name: "Sofía Espacial", password: "1234", role: "child", avatar: "👩🏻‍🚀", points: 540, streakDays: 15, streakProtected: true },
   { id: "3", name: "Lucas Cohete", password: "1234", role: "child", avatar: "🧑🏽‍🚀", points: 480, streakDays: 14, streakProtected: true },
   { id: "4", name: "Valeria Estrella", password: "1234", role: "child", avatar: "👩🏽", points: 390, streakDays: 9, streakProtected: false },
@@ -345,7 +346,7 @@ export async function autoInitDatabase() {
             u.avatar || "astronaut",
             u.points || 0,
             u.streakDays || 0,
-            u.streakProtected ? 1 : 0,
+            Boolean(u.streakProtected),
             u.lastActiveDate || null,
             u.completedChallenges || 0,
           ]
@@ -360,7 +361,7 @@ export async function autoInitDatabase() {
 
         for (const lessonKey of u.completedLessons || []) {
           await pool.query(
-            `INSERT IGNORE INTO user_progress (user_id, lesson_key, completed, score) VALUES (?, ?, 1, 10);`,
+            `INSERT IGNORE INTO user_progress (user_id, lesson_key, completed, score) VALUES (?, ?, TRUE, 10);`,
             [u.id, lessonKey]
           );
         }

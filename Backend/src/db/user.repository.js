@@ -73,7 +73,7 @@ export async function registerUser({ name, password, role = "child", avatar = "a
 
   await pool.query(
     `INSERT INTO users (id, name, password, role, avatar, points, streak_days, streak_protected, streak_shields, completed_challenges)
-     VALUES (?, ?, ?, ?, ?, 0, 0, 1, 2, 0);`,
+     VALUES (?, ?, ?, ?, ?, 0, 0, TRUE, 2, 0);`,
     [newId, cleanName, cleanPassword, cleanRole, cleanAvatar]
   );
 
@@ -116,7 +116,7 @@ export async function recordLessonProgress(userId, completedLesson, score = 10, 
   if (completedLesson) {
     await pool.query(
       `INSERT INTO user_progress (user_id, lesson_key, completed, score)
-       VALUES (?, ?, 1, ?)
+       VALUES (?, ?, TRUE, ?)
        ON DUPLICATE KEY UPDATE score = VALUES(score), completed_at = CURRENT_TIMESTAMP;`,
       [userId, completedLesson, score]
     );
