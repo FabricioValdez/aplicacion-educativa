@@ -1,11 +1,24 @@
 import { Capacitor } from "@capacitor/core";
 
-const isNative = Capacitor.isNativePlatform();
-const DEFAULT_URL = isNative
-  ? "https://aplicacion-educativa-api.onrender.com/api"
-  : "http://localhost:4000/api";
+const RENDER_API_URL = "https://aplicacion-educativa-api.onrender.com/api";
 
-const rawApiUrl = import.meta.env.VITE_API_URL || DEFAULT_URL;
+function getBaseApiUrl() {
+  const isNative = Capacitor.isNativePlatform();
+  const envUrl = import.meta.env.VITE_API_URL;
+
+  // En Android nativo o emulador, localhost apunta al celular y no funciona.
+  // Conectar siempre al backend de Render en producción.
+  if (isNative) {
+    if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
+      return envUrl;
+    }
+    return RENDER_API_URL;
+  }
+
+  return envUrl || "http://localhost:4000/api";
+}
+
+const rawApiUrl = getBaseApiUrl();
 const API_URL = rawApiUrl.endsWith("/") ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 async function request(path, options = {}) {

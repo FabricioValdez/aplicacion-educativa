@@ -39,6 +39,16 @@ app.get("/api/health", (_request, response) => {
   response.json({ ok: true, service: "questworld-backend" });
 });
 
+// Inicialización / migración bajo demanda
+app.get("/api/init-db", async (_request, response) => {
+  try {
+    await autoInitDatabase();
+    response.json({ ok: true, message: "Base de datos verificada e inicializada correctamente." });
+  } catch (error) {
+    response.status(500).json({ ok: false, error: error.message });
+  }
+});
+
 // Rutas modulares conectadas a MySQL
 app.use("/api/auth", authRoutes);
 app.use("/api/classes", classRoutes);

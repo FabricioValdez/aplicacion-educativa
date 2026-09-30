@@ -188,13 +188,18 @@ export async function autoInitDatabase() {
       const schemaPath = resolve(__dirname, schemaFile);
       const schemaSql = await readFile(schemaPath, "utf8");
 
-      const queries = schemaSql
-        .split(";")
-        .map((q) => q.trim())
-        .filter((q) => q.length > 0 && !q.startsWith("--"));
+      if (config.isPostgres && pool.raw) {
+        await pool.raw.query(schemaSql);
+      } else {
+        const cleanSql = schemaSql.replace(/--.*$/gm, "");
+        const queries = cleanSql
+          .split(";")
+          .map((q) => q.trim())
+          .filter((q) => q.length > 0);
 
-      for (const query of queries) {
-        await pool.query(query);
+        for (const query of queries) {
+          await pool.query(query);
+        }
       }
       console.log(`[AutoInit] ✔ Esquema de tablas creado exitosamente.`);
     }
