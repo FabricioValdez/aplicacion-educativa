@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Quicksand:wght@600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #0284c7;
+  --color-secondary: #fbbf24;
+  --color-tertiary: #34d399;
+  --color-neutral: #475569;
+  --color-surface: #fdfbf7;
+  --color-surface-soft: #f8fafc;
+  --color-border: #e2e8f0;
+}
+
+html {
+  background: var(--color-surface-soft);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito Sans", sans-serif;
+  background: var(--color-surface-soft);
+  color: #0f172a;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Quicksand", sans-serif;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Optimizaciones táctiles para móviles y tablets */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea,
+a {
+  touch-action: manipulation;
+}
+
+/* Utilidades para Safe Areas en iOS / Android */
+.safe-area-bottom {
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-top {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}

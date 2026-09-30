@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Lucas",
+      "password": "1234",
+      "role": "child",
+      "avatar": "astronaut",
+      "points": 0,
+      "streakDays": 0,
+      "streakProtected": true,
+      "streakShields": 2,
+      "lastActiveDate": null,
+      "activeDays": [],
+      "completedChallenges": 0,
+      "completedLessons": []
+    }
+  ]
+}
