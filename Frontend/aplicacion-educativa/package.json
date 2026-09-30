@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:android": "vite build && cap sync android",
+    "open:android": "cap open android",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "@stripe/stripe-js": "^9.17.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.43.0",

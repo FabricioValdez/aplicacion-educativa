@@ -1,4 +1,11 @@
-const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+import { Capacitor } from "@capacitor/core";
+
+const isNative = Capacitor.isNativePlatform();
+const DEFAULT_URL = isNative
+  ? "https://aplicacion-educativa-api.onrender.com/api"
+  : "http://localhost:4000/api";
+
+const rawApiUrl = import.meta.env.VITE_API_URL || DEFAULT_URL;
 const API_URL = rawApiUrl.endsWith("/") ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
 async function request(path, options = {}) {

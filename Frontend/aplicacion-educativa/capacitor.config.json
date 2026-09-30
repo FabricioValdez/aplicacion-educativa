@@ -1,0 +1,9 @@
+{
+  "appId": "com.questworld.educativa",
+  "appName": "QuestWorld",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}
