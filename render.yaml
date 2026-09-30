@@ -29,8 +29,6 @@ services:
   - type: web
     name: aplicacion-educativa-web
     runtime: static
-    plan: free
-    region: oregon
     rootDir: Frontend/aplicacion-educativa
     buildCommand: npm install && npm run build
     staticPublishPath: dist
