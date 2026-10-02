@@ -21,19 +21,35 @@ function getBaseApiUrl() {
 const rawApiUrl = getBaseApiUrl();
 const API_URL = rawApiUrl.endsWith("/") ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
-async function request(path, options = {}) {
+async function request(path, options = {}, retries = 2) {
   const { headers = {}, ...restOptions } = options;
-  const response = await fetch(`${API_URL}${path}`, {
-    ...restOptions,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-  });
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(`${API_URL}${path}`, {
+        ...restOptions,
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      });
 
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "No se pudo completar la solicitud.");
-  return data;
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "No se pudo completar la solicitud.");
+      return data;
+    } catch (err) {
+      const isNetworkError =
+        err.name === "TypeError" ||
+        err.message?.includes("fetch") ||
+        err.message?.includes("network") ||
+        err.message?.includes("Failed");
+
+      if (attempt < retries && isNetworkError) {
+        await new Promise((res) => setTimeout(res, 2000));
+        continue;
+      }
+      throw err;
+    }
+  }
 }
 
 export function login(credentials) {
